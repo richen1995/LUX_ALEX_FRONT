@@ -1,0 +1,182 @@
+<div class="space-y-8 text-brand-gray-light">
+  
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl font-extrabold text-white font-sans tracking-tight">Gestión de Servicios</h2>
+      <p class="text-xs text-brand-gray-muted mt-1">Agrega, edita o elimina servicios profesionales de seguridad.</p>
+    </div>
+    <button 
+      (click)="openModal()"
+      class="btn-premium-primary px-5 py-3 text-xs font-bold uppercase tracking-wider"
+    >
+      Agregar Servicio ➕
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex gap-4 items-center bg-brand-surface/60 p-4 rounded-2xl border border-white/5">
+    <div class="relative w-full max-w-md">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Buscar por título..." 
+        class="w-full pl-10 pr-4 py-2.5 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+      />
+      <span class="absolute left-3.5 top-3.5 text-xs text-brand-gray-muted">🔍</span>
+    </div>
+  </div>
+
+  <!-- TABLE LIST -->
+  <div class="glass-panel p-6 rounded-3xl border border-white/5 shadow-premium overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="border-b border-white/5 text-brand-gray-muted uppercase tracking-wider font-bold">
+            <th class="py-3 px-4">Servicio</th>
+            <th class="py-3 px-4">Estimación Costo</th>
+            <th class="py-3 px-4">Resumen</th>
+            <th class="py-3 px-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (srv of filteredServices(); track srv.id) {
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+              <td class="py-4 px-4 flex items-center gap-3">
+                <img [src]="srv.image" class="w-10 h-10 rounded-lg object-cover" />
+                <div>
+                  <span class="font-bold text-white block">{{ srv.title }}</span>
+                  <span class="text-[9px] text-brand-gray-muted font-mono">{{ srv.id }}</span>
+                </div>
+              </td>
+              <td class="py-4 px-4 font-bold text-brand-blue">{{ srv.priceEstimate }}</td>
+              <td class="py-4 px-4 text-brand-gray-muted max-w-xs truncate">{{ srv.description }}</td>
+              <td class="py-4 px-4 text-right space-x-2">
+                <button 
+                  (click)="openModal(srv)"
+                  class="text-brand-blue hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Editar
+                </button>
+                <button 
+                  (click)="deleteService(srv.id)"
+                  class="text-rose-400 hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD/EDIT MODAL OVERLAY -->
+  @if (isModalOpen()) {
+    <div class="fixed inset-0 bg-brand-dark/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-xl rounded-3xl p-6 sm:p-8 relative border border-brand-blue/20 shadow-neon-blue max-h-[90vh] overflow-y-auto animate-fade-in-up">
+        
+        <!-- Close Modal -->
+        <button 
+          (click)="closeModal()" 
+          class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        <h3 class="text-xl font-extrabold text-white mb-6 border-b border-white/5 pb-3">
+          {{ editingService() ? 'Editar Servicio' : 'Agregar Nuevo Servicio' }}
+        </h3>
+
+        <!-- Form -->
+        <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          
+          <div>
+            <label for="title" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Título del Servicio *</label>
+            <input 
+              id="title"
+              formControlName="title"
+              type="text" 
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div>
+            <label for="priceEstimate" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Estimación de Costo *</label>
+            <input 
+              id="priceEstimate"
+              formControlName="priceEstimate"
+              type="text" 
+              placeholder="Ej. Desde $199.00 o Mensualidad $29.99"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div>
+            <label for="image" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace de la Imagen (URL) *</label>
+            <input 
+              id="image"
+              formControlName="image"
+              type="text" 
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div>
+            <label for="description" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Resumen de Descripción *</label>
+            <input 
+              id="description"
+              formControlName="description"
+              type="text"
+              placeholder="Descripción corta de una línea para listados"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div>
+            <label for="longDescription" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Descripción Detallada *</label>
+            <textarea 
+              id="longDescription"
+              formControlName="longDescription"
+              rows="4"
+              placeholder="Explicación extendida de alcances y hardware instalado"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            ></textarea>
+          </div>
+
+          <div>
+            <label for="benefits" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Beneficios Destacados (Separados por comas) *</label>
+            <input 
+              id="benefits"
+              formControlName="benefits"
+              type="text" 
+              placeholder="Ej. Monitoreo remoto, Visión 4K, Soporte 24/7"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div class="pt-4 flex gap-3">
+            <button 
+              type="button" 
+              (click)="closeModal()" 
+              class="flex-1 btn-premium-secondary py-3 text-xs uppercase font-bold"
+            >
+              Cancelar
+            </button>
+            <button 
+              [disabled]="serviceForm.invalid"
+              type="submit" 
+              class="flex-1 btn-premium-primary py-3 text-xs uppercase font-extrabold disabled:opacity-50"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  }
+
+</div>

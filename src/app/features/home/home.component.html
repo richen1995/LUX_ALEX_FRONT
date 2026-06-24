@@ -1,0 +1,298 @@
+<div class="relative w-full overflow-hidden bg-brand-dark">
+  
+  <!-- HERO PRINCIPAL -->
+  <section class="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <!-- Background Grid & Tech Overlay -->
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30 z-0"></div>
+    
+    <!-- Glowing Ambient Lights -->
+    <div class="absolute top-20 left-1/4 w-96 h-96 bg-brand-blue/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+    <div class="absolute bottom-20 right-1/4 w-[400px] h-[400px] bg-brand-accent/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Hero Text Content -->
+      <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-semibold tracking-wider uppercase">
+          ⚡ Innovación y Seguridad Electrónica
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-none font-sans">
+          Protegemos lo que <br class="hidden sm:inline" />
+          <span class="bg-gradient-to-r from-brand-blue to-brand-accent bg-clip-text text-transparent">más te importa</span>
+        </h1>
+        
+        <p class="text-base sm:text-lg text-brand-gray-muted max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+          Diseño, instalación e integración de sistemas avanzados de videovigilancia 4K, alarmas de alta precisión, cercas eléctricas perimetrales y control de acceso inteligente para hogares y corporativos.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+          <a routerLink="/contact" class="w-full sm:w-auto text-center btn-premium-primary px-8 py-4 text-sm uppercase tracking-wider font-extrabold">
+            Solicitar Cotización 📋
+          </a>
+          <a 
+            href="https://api.whatsapp.com/send?phone=593991234567&text=Hola%20SecurePro,%20solicito%20cotización."
+            target="_blank"
+            class="w-full sm:w-auto text-center btn-premium-secondary px-8 py-4 text-sm uppercase tracking-wider font-extrabold flex items-center justify-center gap-2"
+          >
+            <span>💬</span> WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Image Mockup (Premium Security Camera Visual) -->
+      <div class="lg:col-span-5 relative flex justify-center">
+        <div class="relative w-full max-w-md aspect-square rounded-3xl p-1 bg-gradient-to-tr from-brand-blue/20 to-brand-accent/20 shadow-premium">
+          <div class="w-full h-full rounded-[22px] overflow-hidden bg-brand-surface relative flex items-center justify-center border border-white/5">
+            <img 
+              src="/alarma_home.jpg" 
+              alt="Sistema de Alarma LUXFLAME" 
+              class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
+            />
+            
+            <!-- Floating Glassmorphic Widgets -->
+            <div class="absolute bottom-4 left-4 right-4 glass-panel rounded-2xl p-4 border border-white/10 flex items-center justify-between">
+              <div class="flex items-center gap-2.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-xs text-white font-semibold">Sistema Activo</span>
+              </div>
+              <span class="text-[10px] text-brand-blue font-bold uppercase tracking-widest">Ultra HD 4K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ANIMATED COUNTERS / ESTADÍSTICAS -->
+  <section class="border-y border-white/5 bg-brand-surface/40 py-12 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        
+        <div class="space-y-1">
+          <p class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none font-sans bg-gradient-to-r from-brand-blue to-white bg-clip-text text-transparent">
+            {{ clientCount() }}+
+          </p>
+          <p class="text-xs sm:text-sm font-semibold text-brand-gray-muted uppercase tracking-wider">Clientes Satisfechos</p>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none font-sans bg-gradient-to-r from-brand-blue to-white bg-clip-text text-transparent">
+            {{ cameraCount() }}+
+          </p>
+          <p class="text-xs sm:text-sm font-semibold text-brand-gray-muted uppercase tracking-wider">Cámaras Instaladas</p>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none font-sans bg-gradient-to-r from-brand-blue to-white bg-clip-text text-transparent">
+            {{ projectCount() }}+
+          </p>
+          <p class="text-xs sm:text-sm font-semibold text-brand-gray-muted uppercase tracking-wider">Proyectos Completados</p>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-none font-sans bg-gradient-to-r from-brand-blue to-white bg-clip-text text-transparent">
+            {{ experienceYears() }}+
+          </p>
+          <p class="text-xs sm:text-sm font-semibold text-brand-gray-muted uppercase tracking-wider">Años de Experiencia</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS DESTACADOS -->
+  <section class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="text-brand-blue font-bold text-xs uppercase tracking-widest">Lo que ofrecemos</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-sans">Servicios de Seguridad Especializados</h2>
+        <p class="text-sm sm:text-base text-brand-gray-muted">
+          Soluciones integrales de alta tecnología diseñadas para mitigar riesgos, proteger activos y garantizar la tranquilidad de tu familia o corporación.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (srv of featuredServices(); track srv.id) {
+          <div class="glass-panel-hover rounded-3xl overflow-hidden p-6 flex flex-col justify-between">
+            <div class="space-y-4">
+              <div class="w-full h-48 rounded-2xl overflow-hidden bg-brand-dark relative">
+                <img [src]="srv.image" [alt]="srv.title" class="w-full h-full object-cover opacity-80" />
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark to-transparent"></div>
+              </div>
+              <h3 class="text-white font-extrabold text-lg">{{ srv.title }}</h3>
+              <p class="text-sm text-brand-gray-muted leading-relaxed">{{ srv.description }}</p>
+            </div>
+            <div class="pt-6">
+              <a [routerLink]="['/services']" class="text-xs font-bold text-brand-blue uppercase tracking-widest hover:text-white transition-colors flex items-center gap-1.5">
+                Ver Más Detalles <span>→</span>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFICIOS / POR QUÉ ELEGIRNOS -->
+  <section class="py-24 bg-brand-surface/20 border-t border-white/5 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      
+      <div class="space-y-6">
+        <span class="text-brand-blue font-bold text-xs uppercase tracking-widest">Nuestra Calidad</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-sans leading-tight">¿Por qué las corporaciones líderes eligen SECUREPRO?</h2>
+        <p class="text-sm sm:text-base text-brand-gray-muted leading-relaxed">
+          No vendemos simples equipos; diseñamos estrategias de seguridad blindadas. Nos enfocamos en la excelencia técnica, soporte inmediato y en la integración inteligente de todas tus herramientas.
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold shrink-0">✓</div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Monitoreo 24/7</h4>
+              <p class="text-xs text-brand-gray-muted">Respuesta y asistencia armada en caso de incidentes.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold shrink-0">✓</div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Ingenieros Certificados</h4>
+              <p class="text-xs text-brand-gray-muted">Instalaciones limpias cumpliendo normas internacionales.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold shrink-0">✓</div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Soporte Express</h4>
+              <p class="text-xs text-brand-gray-muted">Asistencia técnica in situ en menos de 24 horas.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="w-10 h-10 rounded-xl bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold shrink-0">✓</div>
+            <div>
+              <h4 class="font-bold text-white text-sm">Garantía Extendida</h4>
+              <p class="text-xs text-brand-gray-muted">Hasta 2 años de cobertura oficial en todos los equipos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex justify-center">
+        <div class="w-full max-w-md aspect-video rounded-3xl overflow-hidden bg-brand-surface relative border border-white/5 shadow-premium">
+          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80" alt="Sala de Control de Seguridad" class="w-full h-full object-cover opacity-75" />
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <p class="text-brand-blue text-xs font-bold uppercase tracking-wider mb-1">Central de Monitoreo</p>
+            <p class="text-white text-sm font-semibold leading-snug">Vigilancia perimetral de respuesta inmediata activa en todo momento.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIALES (SLIDER SIMPLE) -->
+  <section class="py-24 border-t border-white/5 bg-brand-dark/80 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <span class="text-brand-blue font-bold text-xs uppercase tracking-widest">Lo que dicen de nosotros</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-sans">Opiniones de Nuestros Clientes</h2>
+      </div>
+
+      <!-- Slider Container -->
+      <div class="max-w-4xl mx-auto glass-panel rounded-3xl p-8 sm:p-12 border border-white/5 relative">
+        <div class="text-center space-y-6">
+          <span class="text-5xl text-brand-blue leading-none">“</span>
+          <p class="text-base sm:text-lg text-brand-gray-light italic leading-relaxed">
+            {{ activeTestimonial().comment }}
+          </p>
+          
+          <!-- Stars -->
+          <div class="flex justify-center gap-1">
+            @for (star of [1,2,3,4,5]; track star) {
+              <span class="text-amber-400 text-lg">★</span>
+            }
+          </div>
+
+          <!-- Author details -->
+          <div class="flex items-center justify-center gap-4 pt-4">
+            <img 
+              [src]="activeTestimonial().image" 
+              [alt]="activeTestimonial().name" 
+              class="w-12 h-12 rounded-full object-cover border-2 border-brand-blue/30"
+            />
+            <div class="text-left">
+              <h4 class="text-white font-bold text-sm leading-none">{{ activeTestimonial().name }}</h4>
+              <span class="text-xs text-brand-gray-muted">{{ activeTestimonial().role }} - {{ activeTestimonial().company }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slider controls -->
+        <div class="flex justify-between items-center mt-8 pt-6 border-t border-white/5">
+          <button (click)="prevTestimonial()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold transition-all">← Anterior</button>
+          <span class="text-xs text-brand-gray-muted">Testimonio {{ activeIndex() + 1 }} de {{ testimonials().length }}</span>
+          <button (click)="nextTestimonial()" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs font-bold transition-all">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS DESTACADOS -->
+  <section class="py-24 border-t border-white/5 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6 mb-16">
+        <div class="space-y-2 text-center sm:text-left">
+          <span class="text-brand-blue font-bold text-xs uppercase tracking-widest">Nuestra Experiencia</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-white font-sans">Casos de Éxito Recientes</h2>
+        </div>
+        <a routerLink="/projects" class="btn-premium-secondary px-6 py-3 text-xs tracking-wider uppercase font-bold">
+          Ver Galería Completa
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        @for (proj of featuredProjects(); track proj.id) {
+          <div class="glass-panel rounded-3xl overflow-hidden border border-white/5 group hover:border-brand-blue/20 transition-all shadow-premium">
+            <div class="w-full h-56 overflow-hidden bg-brand-dark relative">
+              <img [src]="proj.imageAfter" [alt]="proj.title" class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute top-4 left-4 bg-brand-dark/80 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-[10px] font-bold text-brand-blue uppercase tracking-wider">
+                {{ proj.category }}
+              </div>
+            </div>
+            <div class="p-6 space-y-4">
+              <h3 class="text-white font-extrabold text-base leading-snug truncate" [title]="proj.title">{{ proj.title }}</h3>
+              <div class="flex items-center justify-between text-xs text-brand-gray-muted">
+                <span>🏢 {{ proj.client }}</span>
+                <span>📍 {{ proj.location }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="py-20 relative z-10 border-t border-white/5 bg-gradient-to-t from-brand-surface/40 to-transparent">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-none font-sans">
+        ¿Listo para llevar la seguridad de tu <br class="hidden sm:inline" />
+        propiedad al siguiente nivel?
+      </h2>
+      <p class="text-base sm:text-lg text-brand-gray-muted max-w-2xl mx-auto leading-relaxed">
+        Nuestros asesores técnicos están disponibles para diseñar un plan de seguridad a tu medida. Agenda una consultoría inicial sin compromisos hoy mismo.
+      </p>
+      <div class="flex justify-center gap-4">
+        <a routerLink="/contact" class="btn-premium-primary px-8 py-4 text-xs tracking-wider uppercase font-extrabold">
+          Solicitar Cotización Gratis
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div>

@@ -1,0 +1,15 @@
+@if (isVisible()) {
+  <div class="relative bg-gradient-to-r from-brand-accent to-brand-blue text-brand-dark px-4 py-2 text-center text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 z-50">
+    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-brand-dark text-brand-blue text-[10px] font-extrabold uppercase tracking-wider animate-pulse">
+      PROMO
+    </span>
+    <span>🔥 15% de Descuento en Kits de Cámaras IP y Monitoreo gratis por 2 meses.</span>
+    <button 
+      (click)="close()" 
+      class="absolute right-4 text-brand-dark hover:text-white/80 transition-colors p-1"
+      aria-label="Cerrar promoción"
+    >
+      <span class="font-bold text-sm">✕</span>
+    </button>
+  </div>
+}

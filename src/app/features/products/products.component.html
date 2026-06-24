@@ -1,0 +1,329 @@
+<div class="relative w-full overflow-hidden bg-brand-dark min-h-screen pt-28 pb-20 text-brand-gray-light">
+  <!-- Ambient light -->
+  <div class="absolute top-20 right-1/4 w-[400px] h-[400px] bg-brand-blue/5 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-bold uppercase tracking-wider">
+        🛒 Catálogo Tecnológico
+      </span>
+      <h1 class="text-4xl font-extrabold text-white font-sans tracking-tight">Equipos de Seguridad Electrónica</h1>
+      <p class="text-sm text-brand-gray-muted leading-relaxed">
+        Adquiere los mejores componentes y sensores certificados. Búsqueda y filtrado instantáneo para encontrar lo que se adapta a tu proyecto.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      
+      <!-- FILTROS SIDEBAR (DESKTOP) -->
+      <aside class="space-y-6 lg:block" [ngClass]="{ 'hidden': !mobileFiltersOpen() }">
+        <div class="glass-panel p-6 rounded-3xl border border-white/5 space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-white/5 pb-4">
+            <h3 class="font-extrabold text-sm uppercase text-white tracking-wider">Filtros de Búsqueda</h3>
+            <button (click)="resetFilters()" class="text-xs text-brand-blue hover:text-white transition-colors">Limpiar</button>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold uppercase text-brand-gray-muted tracking-wider">Categoría</h4>
+            <div class="space-y-2">
+              @for (cat of categories; track cat) {
+                <label class="flex items-center gap-2.5 text-sm cursor-pointer select-none">
+                  <input 
+                    type="checkbox" 
+                    [checked]="selectedCategories().includes(cat)"
+                    (change)="toggleCategory(cat)"
+                    class="w-4 h-4 bg-brand-dark/50 border-white/10 rounded focus:ring-brand-blue focus:ring-1 accent-brand-blue"
+                  />
+                  <span [ngClass]="{ 'text-brand-blue font-semibold': selectedCategories().includes(cat) }">{{ cat }}</span>
+                </label>
+              }
+            </div>
+          </div>
+
+          <!-- Price Filter -->
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold uppercase text-brand-gray-muted tracking-wider">Rango de Precio</h4>
+            <select 
+              [(ngModel)]="priceRange" 
+              class="w-full px-3 py-2 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+            >
+              <option value="all">Todos los precios</option>
+              <option value="under50">Menos de $50</option>
+              <option value="50to150">$50 - $150</option>
+              <option value="150to300">$150 - $300</option>
+              <option value="over300">Más de $300</option>
+            </select>
+          </div>
+
+          <!-- Status Filter -->
+          <div class="space-y-3">
+            <h4 class="text-xs font-bold uppercase text-brand-gray-muted tracking-wider">Disponibilidad</h4>
+            <div class="space-y-2">
+              @for (st of ['Disponible', 'Agotado', 'Bajo Pedido']; track st) {
+                <label class="flex items-center gap-2.5 text-sm cursor-pointer select-none">
+                  <input 
+                    type="radio" 
+                    name="statusRadio"
+                    [checked]="statusFilter() === st"
+                    (change)="statusFilter.set(st)"
+                    class="w-4 h-4 bg-brand-dark/50 border-white/10 rounded focus:ring-brand-blue focus:ring-1 accent-brand-blue"
+                  />
+                  <span [ngClass]="{ 'text-white font-semibold': statusFilter() === st }">{{ st }}</span>
+                </label>
+              }
+              <label class="flex items-center gap-2.5 text-sm cursor-pointer select-none">
+                <input 
+                  type="radio" 
+                  name="statusRadio"
+                  [checked]="statusFilter() === 'Todos'"
+                  (change)="statusFilter.set('Todos')"
+                  class="w-4 h-4 bg-brand-dark/50 border-white/10 rounded focus:ring-brand-blue focus:ring-1 accent-brand-blue"
+                />
+                <span [ngClass]="{ 'text-white font-semibold': statusFilter() === 'Todos' }">Todos</span>
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- MOBILE FILTERS TOGGLE -->
+      <div class="lg:hidden flex gap-4 w-full">
+        <button 
+          (click)="toggleMobileFilters()"
+          class="w-full bg-brand-surface border border-white/5 py-3.5 rounded-xl font-semibold text-xs tracking-wider uppercase text-white flex items-center justify-center gap-2"
+        >
+          <span>⚙️</span> {{ mobileFiltersOpen() ? 'Ocultar Filtros' : 'Mostrar Filtros' }}
+        </button>
+      </div>
+
+      <!-- CATALOG CONTENT -->
+      <div class="lg:col-span-3 space-y-6">
+        
+        <!-- Search & Sort Controls -->
+        <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-brand-surface/60 p-4 rounded-2xl border border-white/5">
+          <!-- Search Bar -->
+          <div class="relative w-full sm:max-w-md">
+            <input 
+              type="text" 
+              [(ngModel)]="searchQuery" 
+              placeholder="Buscar por cámara, sensor, marca..." 
+              class="w-full pl-10 pr-4 py-2.5 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+            />
+            <span class="absolute left-3.5 top-3 text-brand-gray-muted text-xs">🔍</span>
+            @if (searchQuery()) {
+              <button (click)="searchQuery.set('')" class="absolute right-3.5 top-2 text-brand-gray-muted hover:text-white text-xs">✕</button>
+            }
+          </div>
+
+          <!-- Sorting -->
+          <div class="flex items-center gap-3 w-full sm:w-auto shrink-0">
+            <span class="text-xs text-brand-gray-muted tracking-wider uppercase">Ordenar:</span>
+            <select 
+              [(ngModel)]="sortBy"
+              class="flex-1 sm:flex-none px-3 py-2 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+            >
+              <option value="priceAsc">Precio: Menor a Mayor</option>
+              <option value="priceDesc">Precio: Mayor a Menor</option>
+              <option value="nameAsc">Nombre: A - Z</option>
+              <option value="ratingDesc">Calificación: Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Product Skeletons (Shown when isLoading is true) -->
+        @if (isLoading()) {
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            @for (sk of [1,2,3,4,5,6]; track sk) {
+              <div class="glass-panel p-4 rounded-2xl border border-white/5 space-y-4 animate-pulse">
+                <div class="w-full h-40 bg-white/5 rounded-xl"></div>
+                <div class="h-4 bg-white/5 rounded w-2/3"></div>
+                <div class="h-3 bg-white/5 rounded w-1/2"></div>
+                <div class="h-8 bg-white/5 rounded-xl"></div>
+              </div>
+            }
+          </div>
+        } @else {
+          <!-- Active Catalog Grid -->
+          @if (paginatedProducts().length > 0) {
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              @for (prod of paginatedProducts(); track prod.id) {
+                <div class="glass-panel rounded-2xl overflow-hidden border border-white/5 flex flex-col justify-between group hover:border-brand-blue/30 transition-all shadow-premium p-4">
+                  
+                  <!-- Product Image -->
+                  <div class="relative w-full h-40 rounded-xl overflow-hidden bg-brand-dark mb-4 flex items-center justify-center">
+                    <img [src]="prod.image" [alt]="prod.name" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-550" />
+                    
+                    <!-- Status tag -->
+                    <span 
+                      [ngClass]="{
+                        'bg-emerald-500/20 text-emerald-400 border-emerald-500/30': prod.status === 'Disponible',
+                        'bg-amber-500/20 text-amber-400 border-amber-500/30': prod.status === 'Bajo Pedido',
+                        'bg-rose-500/20 text-rose-400 border-rose-500/30': prod.status === 'Agotado'
+                      }"
+                      class="absolute top-2 left-2 border px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider"
+                    >
+                      {{ prod.status }}
+                    </span>
+                  </div>
+
+                  <!-- Text info -->
+                  <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] uppercase font-bold text-brand-blue tracking-widest">{{ prod.category }}</span>
+                      <span class="text-[10px] text-brand-gray-muted font-semibold">{{ prod.brand }}</span>
+                    </div>
+                    
+                    <h3 class="text-white font-extrabold text-sm leading-snug truncate" [title]="prod.name">{{ prod.name }}</h3>
+                    <p class="text-xs text-brand-gray-muted line-clamp-2 h-8">{{ prod.description }}</p>
+                  </div>
+
+                  <!-- Price and Action -->
+                  <div class="pt-4 border-t border-white/5 mt-4 flex items-center justify-between">
+                    <span class="text-base font-extrabold text-white font-sans">$ {{ prod.price | number:'1.2-2' }}</span>
+                    <button 
+                      (click)="openDetail(prod)"
+                      class="bg-brand-blue/10 border border-brand-blue/30 text-brand-blue hover:bg-brand-blue hover:text-brand-dark px-3 py-1.5 rounded-lg text-xs font-bold transition-colors"
+                    >
+                      Detalles 🔍
+                    </button>
+                  </div>
+
+                </div>
+              }
+            </div>
+
+            <!-- Pagination controls -->
+            @if (totalPages() > 1) {
+              <div class="flex items-center justify-center gap-2 pt-8">
+                <button 
+                  [disabled]="currentPage() === 1"
+                  (click)="currentPage.set(currentPage() - 1)"
+                  class="px-3 py-1.5 rounded-lg bg-brand-surface hover:bg-white/5 border border-white/5 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  ← Prev
+                </button>
+                <span class="text-xs text-brand-gray-muted">Pág. {{ currentPage() }} de {{ totalPages() }}</span>
+                <button 
+                  [disabled]="currentPage() === totalPages()"
+                  (click)="currentPage.set(currentPage() + 1)"
+                  class="px-3 py-1.5 rounded-lg bg-brand-surface hover:bg-white/5 border border-white/5 text-xs font-semibold disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  Sig. →
+                </button>
+              </div>
+            }
+          } @else {
+            <!-- Empty Search State -->
+            <div class="glass-panel rounded-3xl p-12 text-center border border-white/5 space-y-4">
+              <span class="text-4xl">🔎</span>
+              <h3 class="text-white font-bold text-base">No se encontraron productos</h3>
+              <p class="text-xs text-brand-gray-muted max-w-sm mx-auto">
+                Prueba cambiando los términos de búsqueda o limpiando las categorías y rangos de precio seleccionados.
+              </p>
+              <button (click)="resetFilters()" class="btn-premium-secondary px-6 py-2.5 text-xs uppercase tracking-wider font-bold">
+                Mostrar Todos
+              </button>
+            </div>
+          }
+        }
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PRODUCT DETAIL OVERLAY MODAL -->
+  @if (selectedProduct(); as prod) {
+    <div class="fixed inset-0 bg-brand-dark/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative border border-brand-blue/20 shadow-neon-blue max-h-[90vh] overflow-y-auto animate-fade-in-up">
+        
+        <!-- Close Modal -->
+        <button 
+          (click)="closeDetail()" 
+          class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold"
+          aria-label="Cerrar modal"
+        >
+          ✕
+        </button>
+
+        <!-- Product Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          
+          <!-- Column 1: Image -->
+          <div class="w-full space-y-4">
+            <div class="aspect-square w-full rounded-2xl overflow-hidden bg-brand-dark border border-white/10 relative">
+              <img [src]="prod.image" [alt]="prod.name" class="w-full h-full object-cover" />
+            </div>
+            <div class="flex items-center justify-between text-xs">
+              <span class="text-brand-gray-muted">Marca: <strong class="text-white">{{ prod.brand }}</strong></span>
+              <span class="text-brand-gray-muted">Categoría: <strong class="text-white">{{ prod.category }}</strong></span>
+            </div>
+          </div>
+
+          <!-- Column 2: Info & Details -->
+          <div class="space-y-5">
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white font-sans leading-tight">{{ prod.name }}</h3>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-2xl font-black text-brand-blue font-sans">$ {{ prod.price | number:'1.2-2' }}</span>
+              <span 
+                [ngClass]="{
+                  'bg-emerald-500/20 text-emerald-400 border-emerald-500/30': prod.status === 'Disponible',
+                  'bg-amber-500/20 text-amber-400 border-amber-500/30': prod.status === 'Bajo Pedido',
+                  'bg-rose-500/20 text-rose-400 border-rose-500/30': prod.status === 'Agotado'
+                }"
+                class="border px-3 py-1 rounded-xl text-[10px] font-extrabold uppercase tracking-widest"
+              >
+                {{ prod.status }}
+              </span>
+            </div>
+
+            <p class="text-xs text-brand-gray-muted leading-relaxed">
+              {{ prod.description }}
+            </p>
+
+            <!-- Features list -->
+            <div class="space-y-2">
+              <h4 class="text-xs font-extrabold text-white uppercase tracking-wider">Características Principales</h4>
+              <ul class="space-y-1.5 text-xs text-brand-gray-light">
+                @for (feat of prod.features; track feat) {
+                  <li class="flex items-center gap-2">
+                    <span class="text-brand-blue">✓</span>
+                    <span>{{ feat }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="pt-4 flex gap-3">
+              <button 
+                (click)="contactForProduct(prod.name)" 
+                class="flex-1 btn-premium-primary py-3 text-xs tracking-wider uppercase font-extrabold"
+              >
+                Cotizar Proyecto 📋
+              </button>
+              <a 
+                [href]="'https://api.whatsapp.com/send?phone=593991234567&text=Hola%20SecurePro,%20deseo%20cotizar%20el%20producto%20' + encodeURIComponent(prod.name)"
+                target="_blank"
+                class="btn-premium-secondary px-4 py-3 flex items-center justify-center"
+                title="Consultar por WhatsApp"
+              >
+                💬
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

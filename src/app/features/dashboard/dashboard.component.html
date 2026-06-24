@@ -1,0 +1,213 @@
+<div class="space-y-8">
+  
+  <!-- Page Title -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl font-extrabold text-white font-sans tracking-tight">Panel de Control General</h2>
+      <p class="text-xs text-brand-gray-muted mt-1">Monitorea en tiempo real leads, catálogo de productos e interacciones del CRM.</p>
+    </div>
+    <button 
+      (click)="refreshData()"
+      class="btn-premium-secondary px-4 py-2 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+    >
+      <span>🔄</span> Actualizar Datos
+    </button>
+  </div>
+
+  <!-- METRIC WIDGETS -->
+  @if (metrics(); as m) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Widget 1: Total Leads -->
+      <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold text-brand-gray-muted uppercase tracking-wider">Leads Totales</span>
+          <span class="w-8 h-8 bg-brand-blue/10 rounded-lg flex items-center justify-center text-brand-blue">👥</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-white leading-none font-sans">{{ m.totalLeads }}</span>
+          <span class="text-[10px] text-emerald-400 font-bold font-sans">↑ +14%</span>
+        </div>
+        <p class="text-[10px] text-brand-gray-muted">Registrados desde canales web</p>
+      </div>
+
+      <!-- Widget 2: Conversion Rate -->
+      <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold text-brand-gray-muted uppercase tracking-wider">Tasa de Conversión</span>
+          <span class="w-8 h-8 bg-emerald-500/10 rounded-lg flex items-center justify-center text-emerald-400">📈</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-white leading-none font-sans">{{ m.conversionRate }}%</span>
+          <span class="text-[10px] text-emerald-400 font-bold font-sans">↑ +3%</span>
+        </div>
+        <p class="text-[10px] text-brand-gray-muted">Clientes marcados como Cerrados</p>
+      </div>
+
+      <!-- Widget 3: Total Products -->
+      <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold text-brand-gray-muted uppercase tracking-wider">Productos Activos</span>
+          <span class="w-8 h-8 bg-brand-accent/10 rounded-lg flex items-center justify-center text-brand-accent">🛒</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-white leading-none font-sans">{{ m.totalProducts }}</span>
+          <span class="text-[10px] text-brand-gray-muted font-bold font-sans">En 6 categorías</span>
+        </div>
+        <p class="text-[10px] text-brand-gray-muted">Disponibles en el catálogo público</p>
+      </div>
+
+      <!-- Widget 4: Visits Count -->
+      <div class="glass-panel p-6 rounded-2xl border border-white/5 space-y-4">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold text-brand-gray-muted uppercase tracking-wider">Visitas del Sitio</span>
+          <span class="w-8 h-8 bg-amber-500/10 rounded-lg flex items-center justify-center text-amber-400">🌐</span>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl font-black text-white leading-none font-sans">{{ m.totalVisits | number }}</span>
+          <span class="text-[10px] text-brand-blue font-bold font-sans">Lighthouse 94</span>
+        </div>
+        <p class="text-[10px] text-brand-gray-muted">Visitas únicas este mes</p>
+      </div>
+
+    </div>
+
+    <!-- PIPELINE STATUS & SALES TRENDS -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Column 1: Pipeline Breakdown (Pure CSS bars) -->
+      <div class="lg:col-span-7 glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 space-y-6">
+        <h3 class="font-extrabold text-sm uppercase text-white tracking-wider border-l-2 border-brand-blue pl-3">Estado del Pipeline (Leads)</h3>
+        
+        <div class="space-y-5">
+          
+          <!-- State 1: Nuevo -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-brand-gray-light flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Nuevo
+              </span>
+              <span class="text-white">{{ m.leadsByStatus.nuevo }} leads ({{ getPercentage(m.leadsByStatus.nuevo, m.totalLeads) }}%)</span>
+            </div>
+            <div class="w-full h-2.5 bg-brand-dark rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500 transition-all duration-800" [style.width.%]="getPercentage(m.leadsByStatus.nuevo, m.totalLeads)"></div>
+            </div>
+          </div>
+
+          <!-- State 2: Contactado -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-brand-gray-light flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Contactado
+              </span>
+              <span class="text-white">{{ m.leadsByStatus.contactado }} leads ({{ getPercentage(m.leadsByStatus.contactado, m.totalLeads) }}%)</span>
+            </div>
+            <div class="w-full h-2.5 bg-brand-dark rounded-full overflow-hidden">
+              <div class="h-full bg-amber-500 transition-all duration-800" [style.width.%]="getPercentage(m.leadsByStatus.contactado, m.totalLeads)"></div>
+            </div>
+          </div>
+
+          <!-- State 3: Cotizado -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-brand-gray-light flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Cotizado
+              </span>
+              <span class="text-white">{{ m.leadsByStatus.cotizado }} leads ({{ getPercentage(m.leadsByStatus.cotizado, m.totalLeads) }}%)</span>
+            </div>
+            <div class="w-full h-2.5 bg-brand-dark rounded-full overflow-hidden">
+              <div class="h-full bg-indigo-500 transition-all duration-800" [style.width.%]="getPercentage(m.leadsByStatus.cotizado, m.totalLeads)"></div>
+            </div>
+          </div>
+
+          <!-- State 4: Cerrado -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-brand-gray-light flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Cerrado / Ganado
+              </span>
+              <span class="text-white">{{ m.leadsByStatus.cerrado }} leads ({{ getPercentage(m.leadsByStatus.cerrado, m.totalLeads) }}%)</span>
+            </div>
+            <div class="w-full h-2.5 bg-brand-dark rounded-full overflow-hidden">
+              <div class="h-full bg-emerald-500 transition-all duration-800" [style.width.%]="getPercentage(m.leadsByStatus.cerrado, m.totalLeads)"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Metrics Info -->
+      <div class="lg:col-span-5 glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 space-y-6">
+        <h3 class="font-extrabold text-sm uppercase text-white tracking-wider border-l-2 border-brand-blue pl-3">Desempeño Mensual</h3>
+        
+        <div class="grid grid-cols-2 gap-4">
+          @for (trend of m.monthlyTrends; track trend.month) {
+            <div class="bg-brand-dark/40 p-4 rounded-xl border border-white/5 flex flex-col justify-between">
+              <span class="text-[10px] text-brand-gray-muted uppercase tracking-wider font-extrabold">{{ trend.month }}</span>
+              <div class="mt-2 space-y-1">
+                <p class="text-xs text-white">Leads: <strong class="text-brand-blue">{{ trend.leads }}</strong></p>
+                <p class="text-xs text-white">Cierres: <strong class="text-emerald-400">{{ trend.sales }}</strong></p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+    </div>
+  }
+
+  <!-- RECENT LEADS ALERT LIST -->
+  <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/5 space-y-6">
+    <div class="flex justify-between items-center">
+      <h3 class="font-extrabold text-sm uppercase text-white tracking-wider border-l-2 border-brand-blue pl-3">Leads Recientes Recibidos</h3>
+      <a routerLink="/admin/crm" class="text-xs text-brand-blue hover:text-white transition-colors">Ver CRM Completo →</a>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="border-b border-white/5 text-brand-gray-muted uppercase tracking-wider font-bold">
+            <th class="py-3 px-4">Cliente</th>
+            <th class="py-3 px-4">Fecha</th>
+            <th class="py-3 px-4">Teléfono</th>
+            <th class="py-3 px-4">Mensaje Corto</th>
+            <th class="py-3 px-4">Estado</th>
+            <th class="py-3 px-4 text-right">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (lead of recentLeads(); track lead.id) {
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+              <td class="py-4 px-4 font-bold text-white">{{ lead.name }}</td>
+              <td class="py-4 px-4 text-brand-gray-muted">{{ lead.date }}</td>
+              <td class="py-4 px-4 font-mono">{{ lead.phone }}</td>
+              <td class="py-4 px-4 text-brand-gray-light max-w-xs truncate">{{ lead.message }}</td>
+              <td class="py-4 px-4">
+                <span 
+                  [ngClass]="{
+                    'bg-blue-500/20 text-blue-400 border-blue-500/30': lead.status === 'Nuevo',
+                    'bg-amber-500/20 text-amber-400 border-amber-500/30': lead.status === 'Contactado',
+                    'bg-indigo-500/20 text-indigo-400 border-indigo-500/30': lead.status === 'Cotizado',
+                    'bg-emerald-500/20 text-emerald-400 border-emerald-500/30': lead.status === 'Cerrado'
+                  }"
+                  class="border px-2 py-0.5 rounded-lg text-[9px] font-bold uppercase tracking-wider"
+                >
+                  {{ lead.status }}
+                </span>
+              </td>
+              <td class="py-4 px-4 text-right">
+                <a 
+                  routerLink="/admin/crm"
+                  class="bg-brand-blue/10 border border-brand-blue/30 text-brand-blue hover:bg-brand-blue hover:text-brand-dark px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all"
+                >
+                  Gestionar CRM
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

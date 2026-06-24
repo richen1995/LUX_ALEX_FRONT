@@ -1,0 +1,93 @@
+<div class="relative w-full overflow-hidden bg-brand-dark min-h-screen pt-28 pb-20">
+  
+  <!-- Ambient Lights -->
+  <div class="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-20 space-y-4">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-bold uppercase tracking-wider">
+        🛡️ Soluciones Profesionales
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white font-sans tracking-tight">
+        Nuestros Servicios de Seguridad
+      </h1>
+      <p class="text-base text-brand-gray-muted leading-relaxed">
+        Ofrecemos ingeniería integral y equipos con certificación de seguridad industrial. Brindamos servicios integrados que protegen tu infraestructura física e informática.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="space-y-16">
+      @for (srv of services(); track srv.id; let index = $index) {
+        <div 
+          [ngClass]="{ 'lg:flex-row-reverse': index % 2 === 1 }"
+          class="flex flex-col lg:flex-row gap-12 items-center bg-brand-surface/40 p-8 sm:p-10 rounded-[32px] border border-white/5 shadow-premium backdrop-blur-md"
+        >
+          
+          <!-- Visual Mockup -->
+          <div class="w-full lg:w-1/2 relative">
+            <div class="aspect-video w-full rounded-2xl overflow-hidden bg-brand-dark border border-white/10 relative group">
+              <img [src]="srv.image" [alt]="srv.title" class="w-full h-full object-cover opacity-85 group-hover:scale-105 transition-transform duration-700" />
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/90 via-transparent to-transparent"></div>
+              
+              <!-- Price Badge -->
+              <div class="absolute top-4 right-4 bg-brand-dark/80 backdrop-blur-md border border-brand-blue/30 px-4 py-2 rounded-xl text-xs font-bold text-brand-blue shadow-lg">
+                {{ srv.priceEstimate }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Information Details -->
+          <div class="w-full lg:w-1/2 space-y-6">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-sans">
+              {{ srv.title }}
+            </h2>
+            
+            <p class="text-sm sm:text-base text-brand-gray-light leading-relaxed">
+              {{ srv.longDescription }}
+            </p>
+
+            <!-- Benefits Checklist -->
+            <div class="space-y-3 pt-2">
+              <h4 class="text-xs font-extrabold text-brand-blue uppercase tracking-widest">Beneficios Clave</h4>
+              <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-brand-gray-muted">
+                @for (benefit of srv.benefits; track benefit) {
+                  <li class="flex items-start gap-2.5">
+                    <span class="text-brand-blue shrink-0">✓</span>
+                    <span>{{ benefit }}</span>
+                  </li>
+                }
+              </ul>
+            </div>
+
+            <div class="pt-6 flex gap-4">
+              <button 
+                (click)="requestQuote(srv.title)" 
+                class="btn-premium-primary px-8 py-3 text-xs tracking-wider uppercase font-extrabold"
+              >
+                Solicitar Cotización Directa
+              </button>
+            </div>
+          </div>
+
+        </div>
+      }
+    </div>
+
+    <!-- FAQ CTA Section -->
+    <div class="mt-28 glass-panel rounded-3xl p-10 text-center border border-white/5 space-y-6 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-brand-blue/15 rounded-full blur-2xl pointer-events-none"></div>
+      <h3 class="text-2xl font-bold text-white">¿Requieres una cotización de proyecto a gran escala?</h3>
+      <p class="text-sm text-brand-gray-muted max-w-2xl mx-auto leading-relaxed">
+        Realizamos visitas de campo técnicas y simulaciones perimetrales 3D sin coste para industrias, centros comerciales y condominios residenciales.
+      </p>
+      <a routerLink="/contact" class="inline-flex btn-premium-secondary px-8 py-3.5 text-xs tracking-wider uppercase font-extrabold">
+        Agendar Visita Técnica 🏢
+      </a>
+    </div>
+
+  </div>
+</div>

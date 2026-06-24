@@ -1,0 +1,77 @@
+<nav 
+  [ngClass]="{ 'py-3 bg-brand-dark/90 border-b border-white/5': isScrolled(), 'py-5 bg-transparent': !isScrolled() }"
+  class="fixed top-0 left-0 w-full z-40 transition-all duration-300 backdrop-blur-md"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a routerLink="/" class="flex items-center gap-2 group">
+          <div class="w-10 h-10 rounded-xl bg-[#0a1422] flex items-center justify-center text-brand-dark font-black tracking-tighter shadow-neon-blue group-hover:scale-105 transition-transform overflow-hidden">
+            <img src="/logo_lux.png" alt="Logo Lux" class="w-full h-full object-cover">
+          </div>
+          <div class="flex flex-col">
+            <span class="text-white font-extrabold text-lg tracking-wider leading-none font-sans group-hover:text-brand-blue transition-colors">LUXFLAME</span>
+            <span class="text-brand-blue font-semibold text-[10px] tracking-widest uppercase">Servicios e Ingeniería</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a routerLink="/" routerLinkActive="text-brand-blue" [routerLinkActiveOptions]="{exact: true}" class="text-sm font-semibold tracking-wide text-brand-gray-light hover:text-brand-blue transition-colors">Inicio</a>
+        <a routerLink="/services" routerLinkActive="text-brand-blue" class="text-sm font-semibold tracking-wide text-brand-gray-light hover:text-brand-blue transition-colors">Servicios</a>
+        <a routerLink="/products" routerLinkActive="text-brand-blue" class="text-sm font-semibold tracking-wide text-brand-gray-light hover:text-brand-blue transition-colors">Catálogo</a>
+        <a routerLink="/projects" routerLinkActive="text-brand-blue" class="text-sm font-semibold tracking-wide text-brand-gray-light hover:text-brand-blue transition-colors">Proyectos</a>
+        <a routerLink="/contact" routerLinkActive="text-brand-blue" class="text-sm font-semibold tracking-wide text-brand-gray-light hover:text-brand-blue transition-colors">Contacto</a>
+      </div>
+
+      <!-- Buttons -->
+      <div class="hidden md:flex items-center gap-4">
+        <a routerLink="/login" class="text-xs font-semibold tracking-wide text-brand-gray-muted hover:text-white transition-colors flex items-center gap-1.5">
+          <span>👤</span> Admin
+        </a>
+        <a routerLink="/contact" class="btn-premium-primary px-6 py-2.5 text-xs tracking-wider uppercase font-bold">
+          Cotizar Ahora
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden">
+        <button 
+          (click)="toggleMenu()" 
+          type="button" 
+          class="inline-flex items-center justify-center p-2 rounded-lg text-brand-gray-light hover:text-white hover:bg-white/5 focus:outline-none transition-colors"
+        >
+          <span class="sr-only">Abrir menú</span>
+          @if (isOpen()) {
+            <span class="text-2xl font-bold">✕</span>
+          } @else {
+            <span class="text-2xl font-bold">☰</span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  @if (isOpen()) {
+    <div class="md:hidden absolute top-full left-0 w-full bg-brand-dark/95 border-b border-white/5 backdrop-blur-lg px-4 pt-2 pb-6 space-y-3 shadow-premium">
+      <a routerLink="/" (click)="closeMenu()" routerLinkActive="text-brand-blue bg-white/5" [routerLinkActiveOptions]="{exact: true}" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-gray-light hover:text-brand-blue transition-colors">Inicio</a>
+      <a routerLink="/services" (click)="closeMenu()" routerLinkActive="text-brand-blue bg-white/5" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-gray-light hover:text-brand-blue transition-colors">Servicios</a>
+      <a routerLink="/products" (click)="closeMenu()" routerLinkActive="text-brand-blue bg-white/5" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-gray-light hover:text-brand-blue transition-colors">Catálogo</a>
+      <a routerLink="/projects" (click)="closeMenu()" routerLinkActive="text-brand-blue bg-white/5" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-gray-light hover:text-brand-blue transition-colors">Proyectos</a>
+      <a routerLink="/contact" (click)="closeMenu()" routerLinkActive="text-brand-blue bg-white/5" class="block px-4 py-3 rounded-xl text-base font-semibold text-brand-gray-light hover:text-brand-blue transition-colors">Contacto</a>
+      
+      <div class="pt-4 border-t border-white/5 flex flex-col gap-4">
+        <a routerLink="/login" (click)="closeMenu()" class="text-sm font-semibold text-brand-gray-muted hover:text-white px-4 flex items-center gap-2">
+          <span>👤</span> Panel de Administración
+        </a>
+        <a routerLink="/contact" (click)="closeMenu()" class="btn-premium-primary text-center py-3 text-sm tracking-wider uppercase font-bold mx-4">
+          Cotizar Ahora
+        </a>
+      </div>
+    </div>
+  }
+</nav>
+<div class="h-20 w-full" *ngIf="isScrolled() || isOpen()"></div>

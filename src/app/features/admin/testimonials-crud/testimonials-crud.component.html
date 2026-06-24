@@ -1,0 +1,195 @@
+<div class="space-y-8 text-brand-gray-light">
+  
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl font-extrabold text-white font-sans tracking-tight">Gestión de Testimonios</h2>
+      <p class="text-xs text-brand-gray-muted mt-1">Administra los testimonios y opiniones que se muestran en el sitio público.</p>
+    </div>
+    <button 
+      (click)="openModal()"
+      class="btn-premium-primary px-5 py-3 text-xs font-bold uppercase tracking-wider"
+    >
+      Agregar Testimonio ➕
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex gap-4 items-center bg-brand-surface/60 p-4 rounded-2xl border border-white/5">
+    <div class="relative w-full max-w-md">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Buscar por cliente, empresa o cargo..." 
+        class="w-full pl-10 pr-4 py-2.5 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+      />
+      <span class="absolute left-3.5 top-3.5 text-xs text-brand-gray-muted">🔍</span>
+    </div>
+  </div>
+
+  <!-- TABLE LIST -->
+  <div class="glass-panel p-6 rounded-3xl border border-white/5 shadow-premium overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="border-b border-white/5 text-brand-gray-muted uppercase tracking-wider font-bold">
+            <th class="py-3 px-4">Cliente / Opinión</th>
+            <th class="py-3 px-4">Empresa</th>
+            <th class="py-3 px-4">Cargo</th>
+            <th class="py-3 px-4">Puntuación</th>
+            <th class="py-3 px-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (testi of filteredTestimonials(); track testi.id) {
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+              <td class="py-4 px-4 flex items-start gap-3 max-w-sm">
+                <img [src]="testi.image" class="w-10 h-10 rounded-full object-cover shrink-0 mt-0.5 border border-brand-blue/20" />
+                <div>
+                  <span class="font-bold text-white block">{{ testi.name }}</span>
+                  <p class="text-[11px] text-brand-gray-muted italic line-clamp-2 mt-0.5">"{{ testi.comment }}"</p>
+                </div>
+              </td>
+              <td class="py-4 px-4 text-white font-medium">{{ testi.company }}</td>
+              <td class="py-4 px-4">{{ testi.role }}</td>
+              <td class="py-4 px-4">
+                <div class="flex gap-0.5 text-amber-400 font-bold">
+                  @for (star of [1,2,3,4,5].slice(0, testi.rating); track star) {
+                    ★
+                  }
+                </div>
+              </td>
+              <td class="py-4 px-4 text-right space-x-2 shrink-0">
+                <button 
+                  (click)="openModal(testi)"
+                  class="text-brand-blue hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Editar
+                </button>
+                <button 
+                  (click)="deleteTestimonial(testi.id)"
+                  class="text-rose-400 hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD/EDIT MODAL OVERLAY -->
+  @if (isModalOpen()) {
+    <div class="fixed inset-0 bg-brand-dark/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-xl rounded-3xl p-6 sm:p-8 relative border border-brand-blue/20 shadow-neon-blue max-h-[90vh] overflow-y-auto animate-fade-in-up">
+        
+        <!-- Close Modal -->
+        <button 
+          (click)="closeModal()" 
+          class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        <h3 class="text-xl font-extrabold text-white mb-6 border-b border-white/5 pb-3">
+          {{ editingTestimonial() ? 'Editar Testimonio' : 'Agregar Nuevo Testimonio' }}
+        </h3>
+
+        <!-- Form -->
+        <form [formGroup]="testimonialForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          
+          <div>
+            <label for="name" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Nombre del Cliente *</label>
+            <input 
+              id="name"
+              formControlName="name"
+              type="text" 
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="company" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Empresa *</label>
+              <input 
+                id="company"
+                formControlName="company"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+
+            <div>
+              <label for="role" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Cargo *</label>
+              <input 
+                id="role"
+                formControlName="role"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="rating" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Calificación (Estrellas) *</label>
+              <select 
+                id="rating"
+                formControlName="rating"
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              >
+                <option [value]="5">5 Estrellas</option>
+                <option [value]="4">4 Estrellas</option>
+                <option [value]="3">3 Estrellas</option>
+                <option [value]="2">2 Estrellas</option>
+                <option [value]="1">1 Estrella</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="image" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace Avatar (URL) *</label>
+              <input 
+                id="image"
+                formControlName="image"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="comment" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Comentario / Opinión *</label>
+            <textarea 
+              id="comment"
+              formControlName="comment"
+              rows="4"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            ></textarea>
+          </div>
+
+          <div class="pt-4 flex gap-3">
+            <button 
+              type="button" 
+              (click)="closeModal()" 
+              class="flex-1 btn-premium-secondary py-3 text-xs uppercase font-bold"
+            >
+              Cancelar
+            </button>
+            <button 
+              [disabled]="testimonialForm.invalid"
+              type="submit" 
+              class="flex-1 btn-premium-primary py-3 text-xs uppercase font-extrabold disabled:opacity-50"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  }
+
+</div>

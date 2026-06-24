@@ -1,0 +1,213 @@
+<div class="space-y-8 text-brand-gray-light">
+  
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div>
+      <h2 class="text-2xl font-extrabold text-white font-sans tracking-tight">Galería de Proyectos</h2>
+      <p class="text-xs text-brand-gray-muted mt-1">Administra el portafolio de proyectos e instalaciones realizadas.</p>
+    </div>
+    <button 
+      (click)="openModal()"
+      class="btn-premium-primary px-5 py-3 text-xs font-bold uppercase tracking-wider"
+    >
+      Agregar Proyecto ➕
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="flex gap-4 items-center bg-brand-surface/60 p-4 rounded-2xl border border-white/5">
+    <div class="relative w-full max-w-md">
+      <input 
+        type="text" 
+        [(ngModel)]="searchQuery" 
+        placeholder="Buscar por título, cliente o ubicación..." 
+        class="w-full pl-10 pr-4 py-2.5 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-xs text-brand-gray-light"
+      />
+      <span class="absolute left-3.5 top-3.5 text-xs text-brand-gray-muted">🔍</span>
+    </div>
+  </div>
+
+  <!-- TABLE LIST -->
+  <div class="glass-panel p-6 rounded-3xl border border-white/5 shadow-premium overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs border-collapse">
+        <thead>
+          <tr class="border-b border-white/5 text-brand-gray-muted uppercase tracking-wider font-bold">
+            <th class="py-3 px-4">Proyecto</th>
+            <th class="py-3 px-4">Cliente</th>
+            <th class="py-3 px-4">Ubicación</th>
+            <th class="py-3 px-4">Fecha</th>
+            <th class="py-3 px-4">Categoría</th>
+            <th class="py-3 px-4 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (proj of filteredProjects(); track proj.id) {
+            <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+              <td class="py-4 px-4 flex items-center gap-3">
+                <img [src]="proj.imageAfter" class="w-10 h-10 rounded-lg object-cover" />
+                <div>
+                  <span class="font-bold text-white block">{{ proj.title }}</span>
+                  <span class="text-[9px] text-brand-gray-muted font-mono">{{ proj.id }}</span>
+                </div>
+              </td>
+              <td class="py-4 px-4 text-white font-medium">{{ proj.client }}</td>
+              <td class="py-4 px-4">{{ proj.location }}</td>
+              <td class="py-4 px-4 font-mono">{{ proj.date }}</td>
+              <td class="py-4 px-4">
+                <span class="bg-brand-blue/15 text-brand-blue border border-brand-blue/20 px-2 py-0.5 rounded-lg text-[9px] font-bold">
+                  {{ proj.category }}
+                </span>
+              </td>
+              <td class="py-4 px-4 text-right space-x-2">
+                <button 
+                  (click)="openModal(proj)"
+                  class="text-brand-blue hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Editar
+                </button>
+                <button 
+                  (click)="deleteProject(proj.id)"
+                  class="text-rose-400 hover:underline font-bold px-2 py-1 text-[10px]"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ADD/EDIT MODAL OVERLAY -->
+  @if (isModalOpen()) {
+    <div class="fixed inset-0 bg-brand-dark/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-xl rounded-3xl p-6 sm:p-8 relative border border-brand-blue/20 shadow-neon-blue max-h-[90vh] overflow-y-auto animate-fade-in-up">
+        
+        <!-- Close Modal -->
+        <button 
+          (click)="closeModal()" 
+          class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        <h3 class="text-xl font-extrabold text-white mb-6 border-b border-white/5 pb-3">
+          {{ editingProject() ? 'Editar Proyecto' : 'Agregar Nuevo Proyecto' }}
+        </h3>
+
+        <!-- Form -->
+        <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="space-y-4">
+          
+          <div>
+            <label for="title" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Título del Proyecto *</label>
+            <input 
+              id="title"
+              formControlName="title"
+              type="text" 
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="client" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Cliente *</label>
+              <input 
+                id="client"
+                formControlName="client"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+
+            <div>
+              <label for="location" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Ubicación *</label>
+              <input 
+                id="location"
+                formControlName="location"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="date" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Fecha (YYYY-MM-DD) *</label>
+              <input 
+                id="date"
+                formControlName="date"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+
+            <div>
+              <label for="category" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Categoría *</label>
+              <input 
+                id="category"
+                formControlName="category"
+                type="text" 
+                placeholder="Ej. Cámaras, Alarmas"
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label for="imageBefore" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace Imagen 'Antes' *</label>
+              <input 
+                id="imageBefore"
+                formControlName="imageBefore"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+
+            <div>
+              <label for="imageAfter" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace Imagen 'Después' *</label>
+              <input 
+                id="imageAfter"
+                formControlName="imageAfter"
+                type="text" 
+                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label for="description" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Descripción General del Caso de Éxito *</label>
+            <textarea 
+              id="description"
+              formControlName="description"
+              rows="3"
+              class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
+            ></textarea>
+          </div>
+
+          <div class="pt-4 flex gap-3">
+            <button 
+              type="button" 
+              (click)="closeModal()" 
+              class="flex-1 btn-premium-secondary py-3 text-xs uppercase font-bold"
+            >
+              Cancelar
+            </button>
+            <button 
+              [disabled]="projectForm.invalid"
+              type="submit" 
+              class="flex-1 btn-premium-primary py-3 text-xs uppercase font-extrabold disabled:opacity-50"
+            >
+              Guardar Cambios
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  }
+
+</div>

@@ -1,0 +1,76 @@
+@if (isVisible() && !hasBeenClosed()) {
+  <div class="fixed inset-0 bg-brand-dark/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="glass-panel w-full max-w-lg rounded-3xl p-8 relative border border-brand-blue/20 shadow-neon-blue animate-fade-in-up">
+      
+      <!-- Close Button -->
+      <button 
+        (click)="closePopup()" 
+        class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold"
+        aria-label="Cerrar modal"
+      >
+        ✕
+      </button>
+      
+      <!-- Modal content -->
+      <div class="text-center space-y-4">
+        <div class="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-blue to-brand-accent flex items-center justify-center text-3xl shadow-neon-blue">
+          🎁
+        </div>
+        <h3 class="text-2xl font-extrabold text-white font-sans">¡Espera! No dejes tu seguridad al azar</h3>
+        <p class="text-sm text-brand-gray-muted">
+          Obtén un <span class="text-brand-blue font-bold">Diagnóstico de Seguridad y Riesgos Perimetrales 100% GRATUITO</span> para tu hogar o negocio. Déjanos tus datos y un especialista te contactará hoy mismo.
+        </p>
+      </div>
+
+      <!-- Quick Request Form -->
+      <form [formGroup]="exitForm" (ngSubmit)="onSubmit()" class="mt-6 space-y-4">
+        <div>
+          <label for="exit-name" class="block text-xs font-bold text-brand-gray-muted uppercase tracking-wider mb-2">Nombre Completo</label>
+          <input 
+            id="exit-name"
+            formControlName="name"
+            type="text" 
+            placeholder="Ej. Carlos Pérez" 
+            class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue focus:ring-1 focus:ring-brand-blue outline-none text-white text-sm"
+          />
+          @if (exitForm.get('name')?.touched && exitForm.get('name')?.invalid) {
+            <span class="text-rose-500 text-[11px] mt-1 block">El nombre es requerido.</span>
+          }
+        </div>
+
+        <div>
+          <label for="exit-phone" class="block text-xs font-bold text-brand-gray-muted uppercase tracking-wider mb-2">Teléfono de Contacto</label>
+          <input 
+            id="exit-phone"
+            formControlName="phone"
+            type="tel" 
+            placeholder="Ej. +593 99 123 4567" 
+            class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue focus:ring-1 focus:ring-brand-blue outline-none text-white text-sm"
+          />
+          @if (exitForm.get('phone')?.touched && exitForm.get('phone')?.invalid) {
+            <span class="text-rose-500 text-[11px] mt-1 block">Ingrese un número telefónico válido.</span>
+          }
+        </div>
+
+        @if (isSuccess()) {
+          <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-3 rounded-xl text-xs text-center font-semibold">
+            ✓ ¡Diagnóstico solicitado! Te contactaremos pronto.
+          </div>
+        }
+
+        <button 
+          [disabled]="exitForm.invalid || isSuccess()"
+          type="submit" 
+          class="w-full btn-premium-primary py-3.5 text-xs font-extrabold uppercase tracking-wider disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Obtener Mi Diagnóstico Gratis
+        </button>
+        
+        <p class="text-center text-[10px] text-brand-gray-muted">
+          🔒 Garantizamos 100% de confidencialidad en tus datos de seguridad.
+        </p>
+      </form>
+
+    </div>
+  </div>
+}

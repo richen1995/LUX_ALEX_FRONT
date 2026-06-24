@@ -1,0 +1,221 @@
+<div class="relative w-full overflow-hidden bg-brand-dark min-h-screen pt-28 pb-20 text-brand-gray-light">
+  <!-- Ambient light -->
+  <div class="absolute top-20 left-1/4 w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[140px] pointer-events-none z-0"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    
+    <!-- Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 space-y-4">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-blue/10 border border-brand-blue/20 text-brand-blue text-xs font-bold uppercase tracking-wider">
+        🖼️ Casos de Éxito
+      </span>
+      <h1 class="text-4xl font-extrabold text-white font-sans tracking-tight">Proyectos Realizados</h1>
+      <p class="text-sm text-brand-gray-muted leading-relaxed">
+        Explora las implementaciones residenciales y corporativas completadas por nuestros ingenieros certificados.
+      </p>
+    </div>
+
+    <!-- Before/After Slider Demonstration (Premium Interactive Component) -->
+    <div class="glass-panel p-6 sm:p-8 rounded-[32px] border border-white/5 shadow-premium mb-16 max-w-4xl mx-auto">
+      <div class="text-center mb-6">
+        <h3 class="text-lg font-bold text-white">Visualizador Antes y Después (Instalación de CCTV)</h3>
+        <p class="text-xs text-brand-gray-muted mt-1">Usa la barra deslizante para comparar la vulnerabilidad inicial frente al sistema blindado final.</p>
+      </div>
+      
+      <div class="relative aspect-video w-full rounded-2xl overflow-hidden select-none border border-white/10">
+        <!-- Before Image (Underneath) -->
+        <img 
+          src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=1000&q=80" 
+          alt="Antes - Espacio vulnerable sin seguridad" 
+          class="absolute inset-0 w-full h-full object-cover"
+        />
+        <div class="absolute top-4 left-4 bg-rose-500/90 text-white font-bold text-xs px-3 py-1.5 rounded-lg border border-rose-400/20 shadow">
+          ANTES: Espacio Vulnerable
+        </div>
+
+        <!-- After Image (On Top, Clipped) -->
+        <div 
+          [style.clip-path]="'polygon(0 0, ' + sliderPosition() + '% 0, ' + sliderPosition() + '% 100%, 0 100%)'"
+          class="absolute inset-0 w-full h-full"
+        >
+          <img 
+            src="https://images.unsplash.com/photo-1557862921-37829c790f19?auto=format&fit=crop&w=1000&q=80" 
+            alt="Después - Cámaras instaladas" 
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+          <div class="absolute top-4 right-4 bg-emerald-500/90 text-brand-dark font-black text-xs px-3 py-1.5 rounded-lg border border-emerald-400/20 shadow">
+            DESPUÉS: Monitoreo Activo 4K
+          </div>
+        </div>
+
+        <!-- Slider Bar & Handle -->
+        <div 
+          [style.left]="sliderPosition() + '%'"
+          class="absolute inset-y-0 w-1 bg-white cursor-ew-resize z-20 flex items-center justify-center -translate-x-1/2"
+        >
+          <div class="w-8 h-8 rounded-full bg-white text-brand-dark font-black flex items-center justify-center shadow-lg border border-brand-gray-muted text-xs">
+            ↔
+          </div>
+        </div>
+
+        <!-- Input Slider Layer (Covers the whole aspect ratio for dragging ease) -->
+        <input 
+          type="range" 
+          min="0" 
+          max="100" 
+          [(ngModel)]="sliderValue"
+          (input)="onSliderInput($event)"
+          class="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
+        />
+      </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      @for (tab of tabs; track tab) {
+        <button 
+          (click)="activeTab.set(tab)"
+          [ngClass]="{
+            'bg-brand-blue text-brand-dark font-extrabold shadow-neon-blue': activeTab() === tab,
+            'bg-brand-surface hover:bg-white/5 border border-white/5 text-brand-gray-light': activeTab() !== tab
+          }"
+          class="px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition-all"
+        >
+          {{ tab }}
+        </button>
+      }
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      @for (proj of filteredProjects(); track proj.id) {
+        <div 
+          (click)="openLightbox(proj)"
+          class="glass-panel-hover rounded-3xl overflow-hidden border border-white/5 flex flex-col justify-between shadow-premium cursor-pointer group p-4"
+        >
+          <div class="space-y-4">
+            <div class="w-full h-52 rounded-2xl overflow-hidden bg-brand-dark relative">
+              <img [src]="proj.imageAfter" [alt]="proj.title" class="w-full h-full object-cover opacity-85 group-hover:scale-103 transition-transform duration-500" />
+              <div class="absolute top-4 left-4 bg-brand-dark/85 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[9px] font-bold text-brand-blue uppercase tracking-wider">
+                {{ proj.category }}
+              </div>
+            </div>
+            
+            <h3 class="text-white font-extrabold text-base leading-snug group-hover:text-brand-blue transition-colors">{{ proj.title }}</h3>
+            <p class="text-xs text-brand-gray-muted line-clamp-2 h-8 leading-relaxed">{{ proj.description }}</p>
+          </div>
+
+          <div class="pt-4 border-t border-white/5 mt-4 flex items-center justify-between text-[11px] text-brand-gray-muted">
+            <span>🏢 {{ proj.client }}</span>
+            <span>📅 {{ proj.date }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+  </div>
+
+  <!-- LIGHTBOX / DETAIL MODAL -->
+  @if (selectedProject(); as proj) {
+    <div class="fixed inset-0 bg-brand-dark/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="glass-panel w-full max-w-3xl rounded-3xl p-6 sm:p-8 relative border border-brand-blue/20 shadow-neon-blue max-h-[90vh] overflow-y-auto animate-fade-in-up">
+        
+        <!-- Close Lightbox -->
+        <button 
+          (click)="closeLightbox()" 
+          class="absolute top-5 right-5 text-brand-gray-muted hover:text-white transition-colors text-lg font-bold z-40"
+          aria-label="Cerrar lightbox"
+        >
+          ✕
+        </button>
+
+        <div class="space-y-6">
+          
+          <!-- Project Carousel -->
+          <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-brand-dark border border-white/10">
+            <img 
+              [src]="galleryImages()[activeImageIndex()]" 
+              [alt]="proj.title" 
+              class="w-full h-full object-cover transition-opacity duration-300"
+            />
+            
+            <!-- Left/Right controls -->
+            @if (galleryImages().length > 1) {
+              <button 
+                (click)="prevImage()" 
+                class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-dark/85 border border-white/15 text-white flex items-center justify-center hover:bg-brand-blue hover:text-brand-dark transition-all"
+              >
+                ←
+              </button>
+              <button 
+                (click)="nextImage()" 
+                class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-dark/85 border border-white/15 text-white flex items-center justify-center hover:bg-brand-blue hover:text-brand-dark transition-all"
+              >
+                →
+              </button>
+            }
+            
+            <!-- Counter overlay -->
+            <div class="absolute bottom-4 right-4 bg-brand-dark/80 px-3 py-1 rounded-lg text-[10px] text-brand-gray-light font-bold">
+              Imagen {{ activeImageIndex() + 1 }} de {{ galleryImages().length }}
+            </div>
+          </div>
+
+          <!-- Thumbnails indicators -->
+          <div class="flex gap-2.5 overflow-x-auto pb-2">
+            @for (img of galleryImages(); track img; let idx = $index) {
+              <button 
+                (click)="activeImageIndex.set(idx)"
+                [ngClass]="{ 'border-brand-blue scale-102': activeImageIndex() === idx, 'border-transparent opacity-60': activeImageIndex() !== idx }"
+                class="w-20 aspect-video rounded-lg overflow-hidden border-2 transition-all shrink-0"
+              >
+                <img [src]="img" class="w-full h-full object-cover" />
+              </button>
+            }
+          </div>
+
+          <!-- Text Info -->
+          <div class="space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4 border-b border-white/5 pb-4">
+              <h3 class="text-xl sm:text-2xl font-extrabold text-white font-sans leading-tight">{{ proj.title }}</h3>
+              <span class="bg-brand-blue/15 text-brand-blue border border-brand-blue/30 px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                {{ proj.category }}
+              </span>
+            </div>
+
+            <p class="text-sm text-brand-gray-light leading-relaxed">
+              {{ proj.description }}
+            </p>
+
+            <!-- Project details specs -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 text-xs">
+              <div class="bg-brand-surface/60 p-3.5 rounded-xl border border-white/5">
+                <p class="text-brand-gray-muted font-bold uppercase tracking-wider">Cliente</p>
+                <p class="text-white font-semibold mt-1">{{ proj.client }}</p>
+              </div>
+              
+              <div class="bg-brand-surface/60 p-3.5 rounded-xl border border-white/5">
+                <p class="text-brand-gray-muted font-bold uppercase tracking-wider">Ubicación</p>
+                <p class="text-white font-semibold mt-1">{{ proj.location }}</p>
+              </div>
+
+              <div class="bg-brand-surface/60 p-3.5 rounded-xl border border-white/5">
+                <p class="text-brand-gray-muted font-bold uppercase tracking-wider">Fecha</p>
+                <p class="text-white font-semibold mt-1">{{ proj.date }}</p>
+              </div>
+
+              <div class="bg-brand-surface/60 p-3.5 rounded-xl border border-white/5">
+                <p class="text-brand-gray-muted font-bold uppercase tracking-wider">Certificación</p>
+                <p class="text-emerald-400 font-semibold mt-1">✓ Aprobado SECUREPRO</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

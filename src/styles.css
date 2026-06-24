@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-brand-dark: #0A0F1D;
+  --color-brand-surface: #121829;
+  --color-brand-blue: #00D2FF;
+  --color-brand-blue-hover: #00B4DB;
+  --color-brand-accent: #3B82F6;
+  --color-brand-gray-light: #F8FAFC;
+  --color-brand-gray-muted: #94A3B8;
+  --color-brand-gray-dark: #1E293B;
+  
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  
+  --shadow-neon-blue: 0 0 15px rgba(0, 210, 255, 0.4);
+  --shadow-neon-blue-lg: 0 0 30px rgba(0, 210, 255, 0.6);
+  --shadow-premium: 0 10px 30px -10px rgba(2, 6, 23, 0.7);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-fade-in-up: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Material Angular Override & Dark Integration */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--color-brand-dark);
+  color: var(--color-brand-gray-light);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Scrollbar personalizado premium */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-gray-dark);
+  border-radius: 9999px;
+  border: 2px solid var(--color-brand-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-blue);
+}
+
+/* Efectos de Glassmorphism */
+.glass-panel {
+  background: rgba(18, 24, 41, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(18, 24, 41, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.glass-panel-hover:hover {
+  background: rgba(18, 24, 41, 0.85);
+  border-color: rgba(0, 210, 255, 0.3);
+  box-shadow: var(--shadow-premium), var(--shadow-neon-blue);
+  transform: translateY(-4px);
+}
+
+.glass-input {
+  background: rgba(10, 15, 29, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-brand-gray-light);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+.glass-input:focus {
+  outline: none;
+  border-color: var(--color-brand-blue);
+  box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+}
+
+/* Brillo Neón */
+.neon-glow {
+  box-shadow: var(--shadow-neon-blue);
+}
+.neon-glow-hover:hover {
+  box-shadow: var(--shadow-neon-blue-lg);
+  border-color: var(--color-brand-blue);
+}
+
+/* Estilo premium para botones */
+.btn-premium-primary {
+  background: linear-gradient(135deg, var(--color-brand-blue) 0%, var(--color-brand-accent) 100%);
+  color: #020617;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.25);
+}
+.btn-premium-primary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4), var(--shadow-neon-blue);
+  opacity: 0.95;
+}
+
+.btn-premium-secondary {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--color-brand-gray-light);
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
+}
+.btn-premium-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Animación de entrada por clase */
+.reveal-on-scroll {
+  opacity: 0;
+  animation: var(--animate-fade-in-up);
+}
+
+/* Estilo de Material Overrides */
+.mat-mdc-card {
+  background-color: var(--color-brand-surface) !important;
+  color: var(--color-brand-gray-light) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Kanban board grid details */
+.kanban-column {
+  background: rgba(18, 24, 41, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+}
