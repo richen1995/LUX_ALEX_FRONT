@@ -155,25 +155,103 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label for="imageBefore" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace Imagen 'Antes' *</label>
-              <input 
-                id="imageBefore"
-                formControlName="imageBefore"
-                type="text" 
-                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
-              />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Image Before Column -->
+            <div class="space-y-2">
+              <label class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider">Imagen 'Antes' *</label>
+              
+              <div class="flex flex-col gap-3 p-4 bg-brand-dark/40 border border-white/5 rounded-2xl">
+                <!-- Preview area -->
+                <div class="relative w-full h-32 rounded-xl border border-white/10 overflow-hidden bg-brand-dark flex items-center justify-center">
+                  @if (projectForm.get('imageBefore')?.value) {
+                    <img [src]="projectForm.get('imageBefore')?.value" class="w-full h-full object-cover" alt="Vista previa Antes" />
+                  } @else {
+                    <span class="text-2xl text-brand-gray-muted">📷 Antes</span>
+                  }
+                  
+                  @if (uploadingField() === 'before') {
+                    <div class="absolute inset-0 bg-brand-dark/85 flex flex-col items-center justify-center text-center p-1">
+                      <span class="animate-spin text-brand-blue text-lg mb-1">⏳</span>
+                      <span class="text-[9px] font-bold text-white uppercase tracking-wider">Subiendo...</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Upload button -->
+                <input 
+                  type="file" 
+                  #fileInputBefore 
+                  (change)="uploadImage($event, 'imageBefore')" 
+                  accept="image/*" 
+                  class="hidden" 
+                />
+                <button 
+                  type="button"
+                  [disabled]="uploadingField() !== null"
+                  (click)="fileInputBefore.click()"
+                  class="w-full px-4 py-2 bg-brand-blue hover:bg-brand-blue/80 text-brand-dark font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <span>📤</span> Subir Foto Antes
+                </button>
+
+                <!-- URL fallback -->
+                <input 
+                  id="imageBefore"
+                  formControlName="imageBefore"
+                  type="text" 
+                  placeholder="URL Imagen Antes"
+                  class="w-full px-3 py-2 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-[10px]"
+                />
+              </div>
             </div>
 
-            <div>
-              <label for="imageAfter" class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider mb-2">Enlace Imagen 'Después' *</label>
-              <input 
-                id="imageAfter"
-                formControlName="imageAfter"
-                type="text" 
-                class="w-full px-4 py-3 bg-brand-dark/60 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-xs"
-              />
+            <!-- Image After Column -->
+            <div class="space-y-2">
+              <label class="block text-[10px] font-extrabold text-brand-gray-muted uppercase tracking-wider">Imagen 'Después' *</label>
+              
+              <div class="flex flex-col gap-3 p-4 bg-brand-dark/40 border border-white/5 rounded-2xl">
+                <!-- Preview area -->
+                <div class="relative w-full h-32 rounded-xl border border-white/10 overflow-hidden bg-brand-dark flex items-center justify-center">
+                  @if (projectForm.get('imageAfter')?.value) {
+                    <img [src]="projectForm.get('imageAfter')?.value" class="w-full h-full object-cover" alt="Vista previa Después" />
+                  } @else {
+                    <span class="text-2xl text-brand-gray-muted">📷 Después</span>
+                  }
+                  
+                  @if (uploadingField() === 'after') {
+                    <div class="absolute inset-0 bg-brand-dark/85 flex flex-col items-center justify-center text-center p-1">
+                      <span class="animate-spin text-brand-blue text-lg mb-1">⏳</span>
+                      <span class="text-[9px] font-bold text-white uppercase tracking-wider">Subiendo...</span>
+                    </div>
+                  }
+                </div>
+
+                <!-- Upload button -->
+                <input 
+                  type="file" 
+                  #fileInputAfter 
+                  (change)="uploadImage($event, 'imageAfter')" 
+                  accept="image/*" 
+                  class="hidden" 
+                />
+                <button 
+                  type="button"
+                  [disabled]="uploadingField() !== null"
+                  (click)="fileInputAfter.click()"
+                  class="w-full px-4 py-2 bg-brand-blue hover:bg-brand-blue/80 text-brand-dark font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  <span>📤</span> Subir Foto Después
+                </button>
+
+                <!-- URL fallback -->
+                <input 
+                  id="imageAfter"
+                  formControlName="imageAfter"
+                  type="text" 
+                  placeholder="URL Imagen Después"
+                  class="w-full px-3 py-2 bg-brand-dark/80 border border-white/10 rounded-xl focus:border-brand-blue outline-none text-white text-[10px]"
+                />
+              </div>
             </div>
           </div>
 

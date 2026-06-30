@@ -19,6 +19,7 @@ export class ProjectsCrudComponent implements OnInit {
   searchQuery = signal('');
   isModalOpen = signal(false);
   editingProject = signal<Project | null>(null);
+  uploadingField = signal<'before' | 'after' | null>(null);
 
   projectForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
@@ -111,6 +112,38 @@ export class ProjectsCrudComponent implements OnInit {
           this.closeModal();
         });
       }
+    }
+  }
+
+  uploadImage(event: Event, field: 'imageBefore' | 'imageAfter') {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.uploadingField.set(field === 'imageBefore' ? 'before' : 'after');
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'mza76ekg');
+      formData.append('cloud_name', 'imgluxflame');
+
+      fetch('https://api.cloudinary.com/v1_1/imgluxflame/image/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.uploadingField.set(null);
+        if (data.secure_url) {
+          this.projectForm.patchValue({ [field]: data.secure_url });
+        } else {
+          alert('Error al subir la imagen. Por favor, verifique el preset o intente de nuevo.');
+        }
+      })
+      .catch(err => {
+        this.uploadingField.set(null);
+        console.error('Error uploading image to Cloudinary:', err);
+        alert('Ocurrió un error al subir la imagen.');
+      });
     }
   }
 

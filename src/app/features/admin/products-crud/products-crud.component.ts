@@ -19,6 +19,7 @@ export class ProductsCrudComponent implements OnInit {
   searchQuery = signal('');
   isModalOpen = signal(false);
   editingProduct = signal<Product | null>(null);
+  isUploading = signal(false);
 
   productForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -113,6 +114,38 @@ export class ProductsCrudComponent implements OnInit {
           this.closeModal();
         });
       }
+    }
+  }
+
+  uploadImage(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.isUploading.set(true);
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'mza76ekg');
+      formData.append('cloud_name', 'imgluxflame');
+
+      fetch('https://api.cloudinary.com/v1_1/imgluxflame/image/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.isUploading.set(false);
+        if (data.secure_url) {
+          this.productForm.patchValue({ image: data.secure_url });
+        } else {
+          alert('Error al subir la imagen. Por favor, verifique el preset o intente de nuevo.');
+        }
+      })
+      .catch(err => {
+        this.isUploading.set(false);
+        console.error('Error uploading image to Cloudinary:', err);
+        alert('Ocurrió un error al subir la imagen.');
+      });
     }
   }
 
