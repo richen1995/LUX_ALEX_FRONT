@@ -18,9 +18,9 @@ import {
 
 import { FirebaseProductService } from './core/services/firebase-product.service';
 import { FirebaseProjectService } from './core/services/firebase-project.service';
-import { MockServiceService } from './core/services/mock-service.service';
-import { MockTestimonialService } from './core/services/mock-testimonial.service';
-import { MockLeadService } from './core/services/mock-lead.service';
+import { FirebaseServiceService } from './core/services/firebase-service.service';
+import { FirebaseTestimonialService } from './core/services/firebase-testimonial.service';
+import { FirebaseLeadService } from './core/services/firebase-lead.service';
 import { MockAuthService } from './core/services/mock-auth.service';
 
 export const appConfig: ApplicationConfig = {
@@ -34,10 +34,10 @@ export const appConfig: ApplicationConfig = {
     
     // Core Clean Architecture Repositories
     { provide: PRODUCT_REPOSITORY, useClass: FirebaseProductService },
-    { provide: SERVICE_REPOSITORY, useClass: MockServiceService },
+    { provide: SERVICE_REPOSITORY, useClass: FirebaseServiceService },
     { provide: PROJECT_REPOSITORY, useClass: FirebaseProjectService },
-    { provide: TESTIMONIAL_REPOSITORY, useClass: MockTestimonialService },
-    { provide: LEAD_REPOSITORY, useClass: MockLeadService },
+    { provide: TESTIMONIAL_REPOSITORY, useClass: FirebaseTestimonialService },
+    { provide: LEAD_REPOSITORY, useClass: FirebaseLeadService },
     { provide: AUTH_REPOSITORY, useClass: MockAuthService }
   ]
 };

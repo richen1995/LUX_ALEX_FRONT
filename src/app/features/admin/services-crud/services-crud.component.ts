@@ -20,6 +20,8 @@ export class ServicesCrudComponent implements OnInit {
   isModalOpen = signal(false);
   editingService = signal<ServiceItem | null>(null);
 
+  isUploading = signal(false);
+
   serviceForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', [Validators.required]],
@@ -101,6 +103,47 @@ export class ServicesCrudComponent implements OnInit {
           this.closeModal();
         });
       }
+    }
+  }
+
+  uploadImage(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.isUploading.set(true);
+
+      const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+      const sanitizedName = originalName
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      const uniquePublicId = `${sanitizedName}_${Date.now()}`;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'mza76ekg');
+      formData.append('cloud_name', 'imgluxflame');
+      formData.append('public_id', uniquePublicId);
+
+      fetch('https://api.cloudinary.com/v1_1/imgluxflame/image/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.isUploading.set(false);
+        if (data.secure_url) {
+          this.serviceForm.patchValue({ image: data.secure_url });
+        } else {
+          alert('Error al subir la imagen. Por favor, verifique el preset o intente de nuevo.');
+        }
+      })
+      .catch(err => {
+        this.isUploading.set(false);
+        console.error('Error uploading image to Cloudinary:', err);
+        alert('Ocurrió un error al subir la imagen.');
+      });
     }
   }
 

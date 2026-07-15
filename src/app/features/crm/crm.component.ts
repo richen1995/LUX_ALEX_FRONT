@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MockLeadService } from '../../core/services/mock-lead.service';
+import { LEAD_REPOSITORY } from '../../core/services/base.repository';
 import { Lead } from '../../shared/models/models';
 import { take } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { take } from 'rxjs';
   templateUrl: './crm.component.html'
 })
 export class CrmComponent implements OnInit {
-  private leadService = inject(MockLeadService);
+  private leadService = inject(LEAD_REPOSITORY);
 
   // States
   allLeads = signal<Lead[]>([]);
