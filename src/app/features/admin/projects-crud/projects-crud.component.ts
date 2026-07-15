@@ -119,12 +119,23 @@ export class ProjectsCrudComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
+      const prefix = field === 'imageBefore' ? 'antes' : 'despues';
       this.uploadingField.set(field === 'imageBefore' ? 'before' : 'after');
+
+      // Obtener nombre original sin extensión, pasarlo a minúsculas y sanitizarlo
+      const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+      const sanitizedName = originalName
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      const uniquePublicId = `${prefix}_${sanitizedName}_${Date.now()}`;
 
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'mza76ekg');
       formData.append('cloud_name', 'imgluxflame');
+      formData.append('public_id', uniquePublicId);
 
       fetch('https://api.cloudinary.com/v1_1/imgluxflame/image/upload', {
         method: 'POST',

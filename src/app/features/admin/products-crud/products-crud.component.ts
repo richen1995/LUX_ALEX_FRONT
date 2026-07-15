@@ -123,10 +123,20 @@ export class ProductsCrudComponent implements OnInit {
       const file = input.files[0];
       this.isUploading.set(true);
 
+      // Obtener nombre original sin extensión, pasarlo a minúsculas y sanitizar caracteres especiales
+      const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+      const sanitizedName = originalName
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '');
+      const uniquePublicId = `${sanitizedName}_${Date.now()}`;
+
       const formData = new FormData();
       formData.append('file', file);
       formData.append('upload_preset', 'mza76ekg');
       formData.append('cloud_name', 'imgluxflame');
+      formData.append('public_id', uniquePublicId);
 
       fetch('https://api.cloudinary.com/v1_1/imgluxflame/image/upload', {
         method: 'POST',

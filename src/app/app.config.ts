@@ -1,6 +1,10 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter, provideRoutes } from '@angular/router';
+import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 import { routes } from './app.routes';
 import { 
@@ -12,9 +16,9 @@ import {
   AUTH_REPOSITORY 
 } from './core/services/base.repository';
 
-import { MockProductService } from './core/services/mock-product.service';
+import { FirebaseProductService } from './core/services/firebase-product.service';
+import { FirebaseProjectService } from './core/services/firebase-project.service';
 import { MockServiceService } from './core/services/mock-service.service';
-import { MockProjectService } from './core/services/mock-project.service';
 import { MockTestimonialService } from './core/services/mock-testimonial.service';
 import { MockLeadService } from './core/services/mock-lead.service';
 import { MockAuthService } from './core/services/mock-auth.service';
@@ -25,10 +29,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    
     // Core Clean Architecture Repositories
-    { provide: PRODUCT_REPOSITORY, useClass: MockProductService },
+    { provide: PRODUCT_REPOSITORY, useClass: FirebaseProductService },
     { provide: SERVICE_REPOSITORY, useClass: MockServiceService },
-    { provide: PROJECT_REPOSITORY, useClass: MockProjectService },
+    { provide: PROJECT_REPOSITORY, useClass: FirebaseProjectService },
     { provide: TESTIMONIAL_REPOSITORY, useClass: MockTestimonialService },
     { provide: LEAD_REPOSITORY, useClass: MockLeadService },
     { provide: AUTH_REPOSITORY, useClass: MockAuthService }
