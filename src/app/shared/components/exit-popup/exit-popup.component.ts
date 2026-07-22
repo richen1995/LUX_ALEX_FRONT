@@ -47,9 +47,17 @@ export class ExitPopupComponent {
         message: 'SOLICITUD DE DIAGNÓSTICO GRATUITO (Captura por Exit Intent Popup).'
       }).subscribe(() => {
         this.isSuccess.set(true);
+
+        let waMessage = `*Hola LuxTraking, solicito Diagnóstico Gratuito / Cotización:*\n\n`;
+        waMessage += `👤 *Nombre:* ${name}\n`;
+        waMessage += `📞 *Teléfono:* ${phone}`;
+
+        const url = `https://api.whatsapp.com/send?phone=593992745312&text=${encodeURIComponent(waMessage)}`;
+        window.open(url, '_blank');
+
         setTimeout(() => {
           this.closePopup();
-        }, 2000);
+        }, 2500);
       });
     }
   }

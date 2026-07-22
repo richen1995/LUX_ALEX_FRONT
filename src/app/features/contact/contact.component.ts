@@ -18,6 +18,7 @@ export class ContactComponent implements OnInit {
 
   isSending = signal(false);
   isSuccess = signal(false);
+  lastWhatsappUrl = '';
 
   contactForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -61,6 +62,19 @@ export class ContactComponent implements OnInit {
         }).subscribe(() => {
           this.isSending.set(false);
           this.isSuccess.set(true);
+
+          // Build WhatsApp message for instant response
+          let waMessage = `*Hola LuxTraking, solicito una cotización:*\n\n`;
+          waMessage += `👤 *Nombre:* ${name}\n`;
+          waMessage += `📞 *Teléfono:* ${phone}\n`;
+          waMessage += `✉️ *Email:* ${email}\n`;
+          if (interest) {
+            waMessage += `🎯 *Interés:* ${interest}\n`;
+          }
+          waMessage += `📝 *Mensaje:* ${message}`;
+
+          this.lastWhatsappUrl = `https://api.whatsapp.com/send?phone=593992745312&text=${encodeURIComponent(waMessage)}`;
+          window.open(this.lastWhatsappUrl, '_blank');
         });
       }, 1000);
     }

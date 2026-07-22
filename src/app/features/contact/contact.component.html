@@ -77,17 +77,26 @@
         <div class="glass-panel p-8 rounded-[32px] border border-white/5 shadow-premium">
           
           @if (isSuccess()) {
-            <div class="text-center space-y-4 py-8 animate-fade-in-up">
-              <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl mx-auto">
+            <div class="text-center space-y-5 py-8 animate-fade-in-up">
+              <div class="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-3xl mx-auto text-emerald-400">
                 ✓
               </div>
-              <h3 class="text-xl font-bold text-white">¡Mensaje Enviado con Éxito!</h3>
-              <p class="text-xs text-brand-gray-muted max-w-sm mx-auto leading-relaxed">
-                Hemos registrado tu solicitud en nuestra cola de preventa comercial. Un especialista técnico revisará los requerimientos y te contactará en un plazo máximo de 2 horas.
+              <h3 class="text-xl font-bold text-white">¡Cotización Registrada y Enviada a WhatsApp!</h3>
+              <p class="text-xs text-brand-gray-muted max-w-md mx-auto leading-relaxed">
+                Tu solicitud ha sido guardada en nuestra base de datos para seguimiento y hemos abierto un chat de WhatsApp con tus datos para atención inmediata.
               </p>
-              <button (click)="resetForm()" class="btn-premium-secondary px-6 py-2.5 text-xs font-bold uppercase tracking-wider">
-                Enviar Otro Mensaje
-              </button>
+              <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                <a 
+                  [href]="lastWhatsappUrl" 
+                  target="_blank" 
+                  class="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-brand-dark px-5 py-3 rounded-xl text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow"
+                >
+                  💬 Abrir WhatsApp de nuevo
+                </a>
+                <button (click)="resetForm()" class="w-full sm:w-auto btn-premium-secondary px-5 py-3 text-xs font-extrabold uppercase tracking-wider">
+                  Enviar Otra Cotización
+                </button>
+              </div>
             </div>
           } @else {
             <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-5">
