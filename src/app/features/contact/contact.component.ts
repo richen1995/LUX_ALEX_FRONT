@@ -73,7 +73,7 @@ export class ContactComponent implements OnInit {
           }
           waMessage += `📝 *Mensaje:* ${message}`;
 
-          this.lastWhatsappUrl = `https://api.whatsapp.com/send?phone=593992745312&text=${encodeURIComponent(waMessage)}`;
+          this.lastWhatsappUrl = `https://api.whatsapp.com/send?phone=593991691654&text=${encodeURIComponent(waMessage)}`;
           window.open(this.lastWhatsappUrl, '_blank');
         });
       }, 1000);

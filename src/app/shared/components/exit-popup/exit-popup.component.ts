@@ -52,7 +52,7 @@ export class ExitPopupComponent {
         waMessage += `👤 *Nombre:* ${name}\n`;
         waMessage += `📞 *Teléfono:* ${phone}`;
 
-        const url = `https://api.whatsapp.com/send?phone=593992745312&text=${encodeURIComponent(waMessage)}`;
+        const url = `https://api.whatsapp.com/send?phone=593991691654&text=${encodeURIComponent(waMessage)}`;
         window.open(url, '_blank');
 
         setTimeout(() => {

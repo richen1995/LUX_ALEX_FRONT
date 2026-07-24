@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 export class WhatsAppFloatComponent implements OnInit {
   isChatOpen = signal(false);
   showTooltip = signal(false);
-  whatsappUrl = 'https://api.whatsapp.com/send?phone=593992745312&text=Hola%20LuxTraking,%20solicito%20información%20y%20una%20cotización%20sobre%20sus%20sistemas%20de%20seguridad.';
+  whatsappUrl = 'https://api.whatsapp.com/send?phone=593991691654&text=Hola%20LuxTraking,%20solicito%20información%20y%20una%20cotización%20sobre%20sus%20sistemas%20de%20seguridad.';
 
   ngOnInit() {
     // Show the initial tooltip after 5 seconds to prompt engagement
